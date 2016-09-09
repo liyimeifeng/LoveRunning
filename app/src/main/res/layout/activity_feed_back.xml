@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.thinkpaduser.loverunning.FeedBackActivity">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="选择反馈类型"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="16dp"
+    android:textAppearance="?android:textAppearanceMedium"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+           android:layout_marginLeft="16dp"
+            android:text="程序界面问题"
+            android:id="@+id/radioButtonUI" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="创意建议"
+            android:id="@+id/radioButtonAdvice" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/activity_feed_back_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="欢迎你提出宝贵的意见和建议"
+        android:padding="8dp"
+       android:gravity="top"
+        android:maxLength="300"
+        android:maxLines="10"
+        android:background="@null"/>
+    <TextView
+        android:id="@+id/activity_feed_back_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0/300"
+        android:gravity="right"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:hint="请输入手机号或QQ号（必填）"/>
+</LinearLayout>

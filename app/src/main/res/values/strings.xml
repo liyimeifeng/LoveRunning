@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LoveRunning</string>
+    <string name="title_activity_main">LoveRunning</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="nav_action_home">首页</string>
+
+    <string name="nav_action_history">历史记录</string>
+    <string name="nav_action_statistics">数据统计</string>
+    <string name="nav_action_about">关于</string>
+    <string name="nav_action_help">帮助</string>
+    <string name="nav_action_tools">设置</string>
+    //申明数组类型
+    <string-array name="statics_title">
+        <item>今天</item>
+        <item>本周</item>
+        <item>本月</item>
+        <item>今年</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_detail">运动指数</string>
+    <string name="title_activity_personal_info">PersonalInfoActivity</string>
+    <string name="title_activity_feed_back">FeedBackActivity</string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:background="#262626"
+    >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/notifi_running_tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:gravity="center"
+        android:text="时间\n秒"
+        android:textColor="#FFFFFF"
+        />
+    <TextView
+        android:id="@+id/notifi_running_tv_distance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:gravity="center"
+        android:text="距离\n米"
+        android:textColor="#FFFFFF"
+        />
+    <TextView
+        android:id="@+id/notifi_running_tv_stepcount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:text="步数"/>
+
+</LinearLayout>
