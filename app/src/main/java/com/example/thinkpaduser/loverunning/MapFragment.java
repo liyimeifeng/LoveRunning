@@ -32,6 +32,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -224,6 +225,16 @@ public class MapFragment extends Fragment {
     public void onDestroyView() {//销毁视图
         Log.v(LOG_TAG, "打印onDestroyView");
         super.onDestroyView();
+//        try {
+//            mAidlPedmeter.getMapView(new Gson().toJson(mMapView));
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            mAidlPedmeter.isMapViewDestory();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         mMapView.onDestroy();
         unbinder.unbind();//销毁控件，就不存在textBView之类
     }

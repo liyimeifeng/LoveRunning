@@ -1,6 +1,7 @@
 // IPedmeter.aidl
 package com.example.thinkpaduser.loverunning;
 import com.example.thinkpaduser.loverunning.AidlPedmeterCallback;
+
 // Declare any non-default types here with import statements
 
 interface AidlPedmeter {
@@ -14,4 +15,5 @@ interface AidlPedmeter {
 
     void registCallback(AidlPedmeterCallback callback);//注册回调
     void unregistCallback(AidlPedmeterCallback callback);//非注册回调
+    void isMapViewDestory();
 }

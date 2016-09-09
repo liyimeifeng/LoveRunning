@@ -132,7 +132,17 @@ public class PedometerService extends Service {
         public void unregistCallback(AidlPedmeterCallback callback) throws RemoteException{
             mAidlPedmeterCallback = null;
     }
-    };
+
+    @Override
+    public void isMapViewDestory() throws RemoteException {
+        Log.v(LOG_TAG,"一旦mapView消失该方法就被调用");
+        //一旦mapView被Destory就调用该方法，然后停止定位，就不会出现mBaiduMap.animateMapStatus(update);空指针!!!!!哈哈哈！！
+        if (mLocationClient != null){
+            mLocationClient.stop();
+        }
+
+    }
+};
 
     @Nullable
     @Override
@@ -142,7 +152,7 @@ public class PedometerService extends Service {
     }
     private void startStepStatistics(){
         mTotalStep = 0;
-              //1.获得传感器对象
+        //1.获得传感器对象
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         //2.定义一个传感器数据监听器
         mStepDetector = new StepDetector();
@@ -267,7 +277,6 @@ public class PedometerService extends Service {
         startLocationListen();
         Log.v(LOG_TAG,"开始定位");
         return START_REDELIVER_INTENT;
-
     }
 /*
 *开启位置监听
@@ -293,8 +302,6 @@ public class PedometerService extends Service {
         mLocationOption.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         mLocationOption.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
 //        mLocationOption.setIsNeedAddress(false);//设置是否返回地址信息（默认返回地址信息）
-//        mLocationOption.setOpenGps(true);//可选，默认false,设置是否使用gps
-//        mLocationOption.setLocationNotify(false);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
 //        mLocationOption.setIsNeedLocationDescribe(false);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
 //        mLocationOption.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         mLocationClient.setLocOption(mLocationOption);

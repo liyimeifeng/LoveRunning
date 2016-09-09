@@ -84,7 +84,6 @@ private final static String LOG_TAG = "MainActivity";
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
-
         checkAndRequestPermission();
     }
 
