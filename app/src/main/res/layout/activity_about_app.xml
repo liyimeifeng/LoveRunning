@@ -8,16 +8,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#83AF98"
     tools:context="com.example.thinkpaduser.loverunning.AboutAppActivity">
 <ImageView
     android:layout_width="80dp"
     android:layout_height="80dp"
-    android:src="@drawable/logo"
+    android:src="@drawable/run_logo"
     android:layout_gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textAppearance="?android:textAppearanceMedium"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:lineSpacingExtra="16dp"
+        android:textColor="#FFFFFF"
         android:text="　　本项目目标是以借助移动互联网技术帮助用户记录跑步数据为基础上，逐步以用户为中心，建立个人运动数据中心和分享平台。以帮助用户提高运动效率和运动效果，并在一定程度上避免与被动过度对用户造成的伤害。\n　　本系统本能帮助用户建立和管理用户个人数据移动中心，能够帮助用户自动记录跑步数据。提供统计功能，帮助用户管理自己的运动数据"/>
 </LinearLayout>

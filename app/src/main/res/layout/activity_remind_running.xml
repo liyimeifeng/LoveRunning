@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#2f3640"
+    android:layout_height="wrap_content"
+    android:background="#83AF98"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="com.example.thinkpaduser.loverunning.RemindRunningActivity">
@@ -19,9 +23,11 @@
         android:text="跑步提醒"
         android:textAppearance="?android:textAppearanceMedium"/>
     <Switch
+        android:id="@+id/activity_remind_running_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#2f3640"/>
+        android:background="#83AF98"
+        />
 </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -46,7 +52,6 @@
             android:inputType="time"
             android:text="20"
             android:maxLength="2"
-
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="#FFFFFF"/>
         <TextView
@@ -103,11 +108,12 @@
             android:textColor="#FFFFFF"
             android:textAppearance="?android:textAppearanceMedium"/>
     </LinearLayout>
+
     <DatePicker
         android:id="@+id/activity_remind_running_date_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#e2be7f"
-        />
+        android:background="#e2be7f" />
 
 </LinearLayout>
+    </ScrollView>

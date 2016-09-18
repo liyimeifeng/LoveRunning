@@ -69,7 +69,7 @@ public class MapFragment extends Fragment {
         @Override
         public boolean handleMessage(Message msg) {
             if (isStop) {
-                return true; //不管返回真还是假下面代码都不走了
+                return true; //不管返回真还是假下面代码都不走了,相当于下面写用的else语句
             }
             mTimeView.setText(TimeUtil.getRunTime(msg.what));
             mDistanceView.setText(msg.arg2 + "米");
@@ -79,13 +79,14 @@ public class MapFragment extends Fragment {
             if (msg.what / 1000 == 0) {
                 mSpeedview.setText("0米/秒");
             } else {
-                double speed = 10.88 / (msg.what / 1000);
+                double speed = msg.arg2 / (msg.what / 1000);
                 DecimalFormat df = new DecimalFormat("0.00");
                 df.format(speed);
                 mSpeedview.setText(df.format(speed) + "米/秒");
             }
 
             List<Point> points = (List<Point>) msg.obj;
+
             if (points.size() >= 2){
                 PolylineOptions polylineOptions = new PolylineOptions();
                 List<LatLng> latLngs = new ArrayList<>();
@@ -168,6 +169,7 @@ public class MapFragment extends Fragment {
         public void onServiceConnected(ComponentName name, IBinder service) {
             //在服务已连接的时候调用
             Log.v(LOG_TAG, "服务已连接");
+            startButtonView.setVisibility(View.VISIBLE);//服务连接的时候再显示按钮
             mAidlPedmeter = AidlPedmeter.Stub.asInterface(service);
             try {
                 mAidlPedmeter.registCallback(aidlPedmeterCallback);

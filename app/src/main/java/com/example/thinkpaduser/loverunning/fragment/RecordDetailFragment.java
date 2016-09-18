@@ -83,20 +83,22 @@ public class RecordDetailFragment extends Fragment {
         if (!latLngs.isEmpty()){
             Log.v(LOG_TAG,"latlng-------->" + latLngs);
             List<Entry> entries = new ArrayList<>();
-//        ArrayList<Float> aveSpeed = new ArrayList<>();
+//          ArrayList<Float> aveSpeed = new ArrayList<>();
             int n = latLngs.size()/8;//这句话的意思是每隔上八个点描一次,n表示描几次的意思
             //开始画图
             for(int i = 1; i <= 8; i ++ ){
                 int start = (i - 1)*n;
                 int end = i*n;
-                Log.v(LOG_TAG,"end>>>>>>>>>>" + latLngs.size());
+                Log.v(LOG_TAG,"start------------>" + start);
+                Log.v(LOG_TAG,"end------------>" + i*n);
+                Log.v(LOG_TAG,"latlngs.size>>>>>>>>>>" + latLngs.size());
                 if (end >= latLngs.size()){
                     Log.v(LOG_TAG,"latLngs.size()>>>>>>>>>>" + latLngs.size());
                     end = latLngs.size()-1;
                 }
                 entries.add(new Entry(i*n,(float)DistanceUtil.getDistance(latLngs.get(start),latLngs.get(end))));
             }
-            LineDataSet dataSet = new LineDataSet(entries,"数据表");
+            LineDataSet dataSet = new LineDataSet(entries,"跑步里程表");
             LineData lineData = new LineData(dataSet);
             mLineChartView.setData(lineData);
             mLineChartView.getAxisLeft().setDrawGridLines(false);//隐藏右边坐标轴横网格线
@@ -105,7 +107,7 @@ public class RecordDetailFragment extends Fragment {
             //mLineChart.getLegend().setEnabled(false);
             mLineChartView.setDescription("平均速度：25km/h");//实现图表中添加签名
             mLineChartView.setDescriptionPosition(600f,60f);//签名的位置
-            mLineChartView.setDescriptionTextSize(16);//签名字体大小
+            mLineChartView.setDescriptionTextSize(12);//签名字体大小
             mLineChartView.getAxisRight().setEnabled(false); // 隐藏右边 的坐标轴
             mLineChartView.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); // 让x轴在下面
             mLineChartView.getXAxis().setDrawGridLines(false);

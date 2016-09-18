@@ -56,17 +56,17 @@ public class RecordTrackFragment extends Fragment {
         Bundle bundle = getArguments();
         Log.v(LOG_TAG,"打印bundle------》" + bundle);
         ArrayList<LatLng> latLngs = bundle.getParcelableArrayList("latlng");//拿存在数据库里的经纬度
-        Log.v(LOG_TAG,"latLngs------》" + latLngs);
-         latLngs = new ArrayList<>();//这些都是模拟数据
-        LatLng latLng = new LatLng(30.670, 104.061);
-        latLngs.add(latLng);
-        latLng = new LatLng(30.676, 104.062);
-        latLngs.add(latLng);
-        latLng = new LatLng(30.673, 104.065);
-        latLngs.add(latLng);
-        latLng = new LatLng(30.674, 104.060);
-        latLngs.add(latLng);
-        options.points(latLngs);
+//        Log.v(LOG_TAG,"latLngs------》" + latLngs);
+//         latLngs = new ArrayList<>();     //这些都是模拟数据
+//        LatLng latLng = new LatLng(30.670, 104.061);
+//        latLngs.add(latLng);
+//        latLng = new LatLng(30.676, 104.062);
+//        latLngs.add(latLng);
+//        latLng = new LatLng(30.673, 104.065);
+//        latLngs.add(latLng);
+//        latLng = new LatLng(30.674, 104.060);
+//        latLngs.add(latLng);
+//        options.points(latLngs);
         if (latLngs.size() >= 2){
             options.points(latLngs);
             mBaiduMap.addOverlay(options);//画折线图
@@ -108,7 +108,7 @@ public class RecordTrackFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {//保存实例状态
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
     }

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
@@ -57,13 +58,14 @@ public class PersonalInfoActivity extends AppCompatActivity implements NumberPic
         mHeightPicker.setMinValue(140);
         SharedPreferences sp = getSharedPreferences("height",Context.MODE_PRIVATE);
         Log.v(LOG_TAG,"------"+ sp.getString("height",""));
-
         if (sp.getString("height","").isEmpty()){
+            Log.v(LOG_TAG,"如果height记录为空——————————————》");
             mHeightPicker.setValue(170);
         }else{
             Log.v(LOG_TAG,"Integer.parseInt(sp.getString(\"height\",\"\"))"+Integer.parseInt(sp.getString("height","")));
-//        mHeightPicker.setValue(Integer.parseInt(sp.getString("height","")));
-
+            int height = Integer.parseInt(sp.getString("height",""));
+            Log.v(LOG_TAG,"height---------->" + height);
+            mHeightPicker.setValue(height);
         }
 
         mWeightPicker.setFormatter(this);
@@ -71,13 +73,14 @@ public class PersonalInfoActivity extends AppCompatActivity implements NumberPic
         mWeightPicker.setOnScrollListener(this);
         mWeightPicker.setMaxValue(100);
         mWeightPicker.setMinValue(40);
-//
         SharedPreferences sp2 = getSharedPreferences("weight",Context.MODE_PRIVATE);
         Log.v(LOG_TAG,"------"+ sp2.getString("weight",""));
         if (sp2.getString("weight","").isEmpty()){
-            mHeightPicker.setValue(60);
+            mWeightPicker.setValue(60);
         }else{
-            mHeightPicker.setValue(Integer.parseInt(sp2.getString("weight","")));
+            int weight = Integer.parseInt(sp2.getString("weight",""));
+            Log.v(LOG_TAG,"weight-------------------->" + weight);
+            mWeightPicker.setValue(weight);
         }
 
         String[] sex = {"男","女"};
