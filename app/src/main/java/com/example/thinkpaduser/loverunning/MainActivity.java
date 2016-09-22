@@ -4,7 +4,9 @@ import android.Manifest;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;//v4.Fragment的兼容性更宽，4.0版本以前的也能使用，推荐使用。改成那个也没问题
@@ -18,10 +20,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +39,15 @@ import com.example.thinkpaduser.loverunning.fragment.SetFragment;
 import com.example.thinkpaduser.loverunning.fragment.StaticsFragment;
 import com.example.thinkpaduser.loverunning.fragment.WeatherFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -46,10 +59,18 @@ import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.moments.WechatMoments;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,HelpFragment.OnFragmentListener {
 private final static String LOG_TAG = "MainActivity";
+    private String mTemperature, mTemperature_range, mWeather, mSportStatus,mAdvice,mUV;
+    private TextView mTemperatureView,mTemperature_rangeView,mWeatherView,mSportStatusView;
+    private ImageView mWeatherIconView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +96,25 @@ private final static String LOG_TAG = "MainActivity";
         dateView.setText(TimeUtil.getCurrentMonthAndDay());
         TextView timeView = (TextView)headerView.findViewById(R.id.nav_header_main_tv_time);
         timeView.setText(TimeUtil.getTime(System.currentTimeMillis()));
+        mTemperatureView  = (TextView)headerView.findViewById(R.id.nav_header_tv_temperature);
+        mTemperature_rangeView  = (TextView)headerView.findViewById(R.id.nav_header_tv_temperature_range);
+        mWeatherView = (TextView)headerView.findViewById(R.id.nav_header_tv_weather);
+        mWeatherIconView = (ImageView)headerView.findViewById(R.id.nav_header_tv_weather_icon);
+        mSportStatusView =  (TextView)headerView.findViewById(R.id.nav_header_tv_sport_status);
+        getWeather();
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceMapFragment(new WeatherFragment());
+                Bundle bundle = new Bundle();
+                bundle.putString("weather",mWeather);
+                bundle.putString("temperature",mTemperature);
+                bundle.putString("temperature_range",mTemperature_range);
+                bundle.putString("sportStatus",mSportStatus);
+                bundle.putString("advice",mAdvice);
+                bundle.putString("UV",mUV);
+                Fragment weatherFragment = new WeatherFragment();
+                weatherFragment.setArguments(bundle);
+                replaceMapFragment(weatherFragment);
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
             }
@@ -87,7 +123,7 @@ private final static String LOG_TAG = "MainActivity";
         checkAndRequestPermission();
     }
 
-    private void showShare() {
+    private void showShare(String imagePath) {
         ShareSDK.initSDK(this);
         OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
@@ -106,13 +142,14 @@ private final static String LOG_TAG = "MainActivity";
     }
 });
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
-        oks.setTitle("英雄联盟");
+        oks.setTitle("我的跑步详情");
         // titleUrl是标题的网络链接，QQ和QQ空间等使用
-        oks.setTitleUrl("http://lol.qq.com/main.shtml");
+//        oks.setTitleUrl("http://lol.qq.com/main.shtml");
         // text是分享文本，所有平台都需要这个字段
         oks.setText("我分享给你看");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+//        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        oks.setImagePath(imagePath);//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setUrl("http://sharesdk.cn");
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
@@ -232,15 +269,12 @@ private final static String LOG_TAG = "MainActivity";
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.share) {
             Log.v(LOG_TAG,"点击分享");
-            Toast.makeText(getApplicationContext(),"正在分享",Toast.LENGTH_SHORT).show();
-            showShare();
+            showShare(getandSaveCurrentImage());
 //            QQ.ShareParams sp = new QQ.ShareParams();
 //            sp.setText("测试分享的文本");
 ////            sp.setImagePath("/mnt/sdcard/location.jpg”);
-//
 //            Platform weibo = ShareSDK.getPlatform(QZone.NAME);
 ////            weibo.setPlatformActionListener(paListener); // 设置分享事件回调
 //// 执行图文分享
@@ -313,6 +347,129 @@ private final static String LOG_TAG = "MainActivity";
     public void regist(HelpFragment.OnBackKeyClickListener listener) {
         Log.v(LOG_TAG,"----------->regist");
         mListener = listener;
+    }
+
+    /*
+    * //对接百度天气接口，使用Okhttp网络框架
+    */
+    public void getWeather() {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                //注意这里还需要mcode参数，也就是发布版安全码：SHA1+包名！！！！中间用；隔开
+                .url("http://api.map.baidu.com/telematics/v3/weather?location=成都&output=json&ak=L9Utu1GXBtX6uULtOaGgugGfelwu2wCr&mcode=82:57:AE:40:B2:5B:A0:9B:A3:1A:B2:26:32:5E:BF:7A:A4:8F:1B:51;com.example.thinkpaduser.loverunning")
+                .method("GET", null)//凡是拼接URL数据的，就向上面这个拼接了城市和Key值，都是GET请求，所以formBody要注释掉，POST请求不拼接URL
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {//这种是异步请求，相当于子线程，所以里面肯定不能更新UI
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(getApplicationContext(),"请检查网络连接状态",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Log.v(LOG_TAG, "result--------->" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("error") == 0) {
+                        JSONArray array = jsonObject.getJSONArray("results");
+                        for (int j = 0; j <= array.length(); j++) {
+                            JSONObject obj = array.getJSONObject(j);
+                            String pm25 = obj.getString("pm25");
+                            Log.v(LOG_TAG,  "---------pm25---------->" + pm25);
+                            JSONArray jsonArray = obj.getJSONArray("weather_data");
+//                            for (int i = 0; i <= jsonArray.length(); i++) {
+                            JSONObject jsonObject2 = jsonArray.getJSONObject(0);
+                            String date = jsonObject2.getString("date");
+                            mTemperature = date.substring(14, 16);//获得指定索引处的字符串，包括第14位，不包括第16位
+                            mWeather = jsonObject2.getString("weather");
+                            mTemperature_range = jsonObject2.getString("temperature");
+//                            }
+                            JSONArray jsonArray2 = obj.getJSONArray("index");
+                            JSONObject jsonObject3 = jsonArray2.getJSONObject(4);
+                            mUV = jsonObject3.getString("zs");
+//                            for (int k = 0; k <= jsonArray2.length(); k++) {
+                            JSONObject jsonObject4 = jsonArray2.getJSONObject(3);
+                            Log.v(LOG_TAG,"---跑步适宜度-------"+jsonObject4.getString("title")+"---------"+ jsonObject4.get("zs"));
+                            mSportStatus = jsonObject4.getString("title")+" : "+jsonObject4.get("zs");
+                            mAdvice = jsonObject4.getString("des");
+//                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWeatherView.setText(mWeather);
+                        Log.v(LOG_TAG,"weather----------->" + mWeather);
+                        if (mWeather.contains("雨")){
+                            mWeatherIconView.setImageResource(R.drawable.rain);
+                        }else if (mWeather.contains("晴")){
+                            mWeatherIconView.setImageResource(R.drawable.sun);
+                        }else {
+                            mWeatherIconView.setImageResource(R.drawable.rain);
+                        }
+                        mTemperatureView.setText(mTemperature + "℃");
+                        mTemperature_rangeView.setText(mTemperature_range);
+                        mSportStatusView.setText(mSportStatus);
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    /*
+    获取和保存当前屏幕的截图
+     */
+    private String getandSaveCurrentImage(){
+        //1、构建Bitmap
+        WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        int w = display.getWidth();
+        int h = display.getHeight();
+        Bitmap bmp = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888);
+        //2、获取屏幕
+        View decorView = this.getWindow().getDecorView();
+        decorView.setDrawingCacheEnabled(true);
+        bmp = decorView.getDrawingCache();
+        String savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/screenImage";
+        //3、保存Bitmap
+        File path = new File(savePath);
+        //文件
+        String filrPath = savePath+"/image.png";
+        Log.v(LOG_TAG,"filrPath------------>" + filrPath);
+        File file = new File(filrPath);
+        if (!path.exists()){
+            path.mkdirs();
+        }
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(null != fos){
+            bmp.compress(Bitmap.CompressFormat.PNG,100,fos);
+            try {
+                fos.flush();
+                fos.close();
+                Toast.makeText(this,"截图已保存",Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return filrPath;
     }
 
 }

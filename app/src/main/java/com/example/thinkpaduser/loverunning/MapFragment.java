@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 //import com.baidu.location.BDNotifyListener;//假如用到位置提醒功能，需要import该类
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
@@ -86,7 +87,6 @@ public class MapFragment extends Fragment {
             }
 
             List<Point> points = (List<Point>) msg.obj;
-
             if (points.size() >= 2){
                 PolylineOptions polylineOptions = new PolylineOptions();
                 List<LatLng> latLngs = new ArrayList<>();
@@ -102,7 +102,7 @@ public class MapFragment extends Fragment {
             }
 
             try {//恢复跑步状态
-                Log.v(LOG_TAG,"mAidlPedmeter.isRunning()"+ mAidlPedmeter.isRunning());
+                Log.v(LOG_TAG,"恢复跑步状态后------------>"+ mAidlPedmeter.isRunning());
                 if (mAidlPedmeter.isRunning()){
                     startButtonView.setText("停止");
                 }else{
@@ -157,7 +157,7 @@ public class MapFragment extends Fragment {
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(latLng, mBaiduMap.getMaxZoomLevel()/(float)1.15);
 //           Log.v(LOG_TAG,"打印mBaiduMap=====》》》》" + mBaiduMap);
 //            Log.v(LOG_TAG,"update=====》》》》" + update);
-            if (mBaiduMap != null){
+            if (update != null&&mBaiduMap != null){
                 mBaiduMap.animateMapStatus(update);
             }
             return true;
@@ -285,6 +285,11 @@ public class MapFragment extends Fragment {
         //BIND_AUTO_CREATE可以自动创建启动服务，但是会在解除绑定的时候自动停止服务
     }
 
+
+    /*
+    *  onSaveInstanceState是在该activity被系统回收之前，通常是在后台，内存不够时调用，用于保存想要保存的数据、状态等
+    *  在onPause方法之前，在onStop方法之后
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

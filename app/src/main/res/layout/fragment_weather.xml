@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#414858"
+    android:background="#83AF98"
     tools:context="com.example.thinkpaduser.loverunning.fragment.WeatherFragment">
     <LinearLayout
         android:layout_width="260dp"
@@ -13,16 +13,18 @@
         android:layout_gravity="center"
         android:background="@drawable/red_weather">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/fragment_weather_tv_weather_icon"
+            android:layout_width="96dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/cloudy"/>
+            android:src="@drawable/rain"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
+                android:id="@+id/fragment_weather_tv_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12℃"
@@ -36,11 +38,13 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp">
                 <TextView
+                    android:id="@+id/fragment_weather_tv_weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="多云"
                     android:textColor="#FFFFFF"/>
                 <TextView
+                    android:id="@+id/fragment_weather_tv_temperature_range"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8℃—20℃"
@@ -84,6 +88,7 @@
             android:layout_marginLeft="8dp"
             android:textAppearance="?android:textAppearanceLarge" />
         <TextView
+            android:id="@+id/fragment_weather_tv_UV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="弱"
@@ -163,6 +168,7 @@
             android:textAppearance="?android:textAppearanceLarge"/>
     </LinearLayout>
     <TextView
+        android:id="@+id/fragment_weather_tv_sport_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -171,6 +177,7 @@
        android:gravity="center"
         android:textAppearance="?android:textAppearanceLarge"/>
     <TextView
+        android:id="@+id/fragment_weather_tv_advice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

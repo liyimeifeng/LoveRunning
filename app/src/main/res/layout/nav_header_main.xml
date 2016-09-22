@@ -17,6 +17,7 @@
         android:orientation="vertical"
         android:gravity="center">
         <TextView
+            android:id="@+id/nav_header_tv_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12℃"
@@ -51,19 +52,23 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
+                android:id="@+id/nav_header_tv_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="多云"/>
             <ImageView
+                android:id="@+id/nav_header_tv_weather_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/weather"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/nav_header_tv_temperature_range"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="8℃—20℃"/>
         <TextView
+            android:id="@+id/nav_header_tv_sport_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="适宜跑步"

@@ -185,7 +185,6 @@ public class PedometerService extends Service {
     private BDLocationListener mLocationListener = new BDLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
-//            Log.v(LOG_TAG,"位置监听开启");
             double lat = bdLocation.getLatitude();//计算经纬度
             double lng = bdLocation.getLongitude();
 //            Log.v(LOG_TAG,"打印我现在的位置" + lat + "/" + lng);
@@ -195,7 +194,6 @@ public class PedometerService extends Service {
             if (mAidlPedmeterCallback != null){
                 try {
                     mAidlPedmeterCallback.location(lat,lng);
-
 //                    location方法在fragment里面才能运行
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -207,8 +205,9 @@ public class PedometerService extends Service {
                 if (mLastLatlng != latLng && mLastLatlng.latitude != latLng.latitude && mLastLatlng.longitude != latLng.longitude){
                     float distance = (float)mDistanceUtil.getDistance(latLng,mLastLatlng);//计算两个经纬度之间的直线距离
                     mTotalDiatance += distance;//他变成了总距离
+                    Log.v(LOG_TAG,"mTotalDiatance-------------"+ mTotalDiatance);
                 }else{
-//                    Log.v(LOG_TAG,"两个点相等");
+                    Log.v(LOG_TAG,"两个点相等mTotalDiatance-------------"+ mTotalDiatance);
                     return;
                 }
             }
