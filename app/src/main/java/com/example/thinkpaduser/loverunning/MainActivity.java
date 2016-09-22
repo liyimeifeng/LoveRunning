@@ -390,7 +390,7 @@ private final static String LOG_TAG = "MainActivity";
                             mUV = jsonObject3.getString("zs");
 //                            for (int k = 0; k <= jsonArray2.length(); k++) {
                             JSONObject jsonObject4 = jsonArray2.getJSONObject(3);
-                            Log.v(LOG_TAG,"---跑步适宜度-------"+jsonObject4.getString("title")+"---------"+ jsonObject4.get("zs"));
+                            Log.v(LOG_TAG,"---跑步适宜度-----"+jsonObject4.getString("title")+"---------"+ jsonObject4.get("zs"));
                             mSportStatus = jsonObject4.getString("title")+" : "+jsonObject4.get("zs");
                             mAdvice = jsonObject4.getString("des");
 //                            }
